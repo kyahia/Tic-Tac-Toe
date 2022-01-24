@@ -1,0 +1,25 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+
+section{
+    display: flex;
+    flex-wrap: wrap;
+    width: 350px;
+    justify-content: center;
+}
+
+.cell{
+    height: 100px;
+    width: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+}
+
+h1{
+    text-align: center;
+}
