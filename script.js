@@ -1,7 +1,6 @@
 const game = (() => {
     const gameBoard = document.querySelector('section');
     const cells = gameBoard.querySelectorAll('div');
-    let winner = "";
     let positions = [];
 
     for (let i = 1; i < 4; i++) {
@@ -17,6 +16,7 @@ const game = (() => {
 
 
     const select = (cell) => {
+        if (!positions.includes(cell.id)) return;
         play(player1, cell.id);
         play(computer, positions[Math.floor(positions.length * Math.random())]);
     }
@@ -37,9 +37,16 @@ const game = (() => {
     }
 
     const announceWinner = (char) => {
+        gameBoard.remove();
         const winDiv = document.createElement('h1');
-        winDiv.textContent = "Winner is : "+char;
-        gameBoard.appendChild(winDiv);
+        const btn = document.createElement('button');
+        
+        winDiv.textContent = "Winner is " + char;
+        btn.textContent = 'Replay';
+        btn.onclick = () => location.reload();
+        
+        document.body.appendChild(winDiv);
+        document.body.appendChild(btn);
     }
     return { begin };
 })();
@@ -49,67 +56,45 @@ const game = (() => {
 const Player = (charachter) => {
     const mark = charachter;
     let marked = [];
-    let isWinner = false;
     const fill = (position) => {
         marked.push(position);
     }
 
     const evaluate = () => {
-        let grid = [...marked];
-        let one = "";
-        let two = "";
-        let three = "";
-        // same row
-        for (let i = 0; i < grid.length; i++) {
-            one = grid[i][0];
-            grid.splice(i, 1);
-            for (let j = 0; j < grid.length; j++)
-                if (grid[j][0] == one) {
-                    two = grid[j][0];
-                    grid.splice(j, 1);
-                    for (let k = 0; k < grid.length; k++)
-                        if (grid[k][0] == one) {
-                            three = grid[k][0];
-                            return true;
-                        }
+        // horizontals
+        for (let i = 1; i <= 3; i++) {
+            for (let j = 1; j <= 3; j++) {
+                if (!marked.includes(i + '.' + j)){
+                    break;
                 }
+                if (j === 3) return true;
+            }
         }
 
-        // same col
-        grid = [...marked];
-        for (let i = 0; i < grid.length; i++) {
-            one = grid[i].slice(-1);
-            grid.splice(i, 1);
-            for (let j = 0; j < grid.length; j++)
-                if (grid[j].slice(-1) == one) {
-                    two = grid[j].slice(-1);
-                    grid.splice(j, 1);
-                    for (let k = 0; k < grid.length; k++)
-                        if (grid[k].slice(-1) == one) {
-                            three = grid[k].slice(-1);
-                            return true;
-                        }
+        // verticals
+        for (let i = 1; i <= 3; i++) {
+            for (let j = 1; j <= 3; j++) {
+                if (!marked.includes(j + '.' + i)){
+                    break;
                 }
+                if (j === 3) return true;
+            }
         }
 
         // diag
-        grid = [...marked];
-        for (let i = 0; i < grid.length; i++) {
-            if (grid[i][0] == grid[i][2]) {
-                one = grid[i];
-                grid.splice(i, 1);
-                for (let j = 0; j < grid.length; j++)
-                    if (grid[j][0] == grid[j][2]) {
-                        two = grid[j];
-                        grid.splice(j, 1);
-                        for (let k = 0; k < grid.length; k++)
-                            if (grid[k][0] == grid[k][2]) {
-                                return true;
-                            }
-                    }
-
+        for (let i = 1; i <= 3; i++) {
+            if (!marked.includes(i + '.' + i)){
+                break;
             }
+            if (i === 3) return true;
         }
+        for (let i = 0; i < 3; i++) {
+            if (!marked.includes(`${1+i}.${3-i}`)){
+                break;
+            }
+            if (i === 2) return true;
+        }
+
         return false;
     }
 

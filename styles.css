@@ -1,25 +1,34 @@
 body{
+    margin: 0;
+    padding: 1rem;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-around; 
+    align-items: center;
+    flex-direction: column;
 }
 
 section{
     display: flex;
     flex-wrap: wrap;
-    width: 350px;
+    min-width: 350px;
+    width: 50vw;
     justify-content: center;
 }
 
 .cell{
-    height: 100px;
-    width: 100px;
+    height: max(100px, calc(0.3*50vw));
+    width: max(100px, 30%);
     border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: xx-large;
+    font-size: max(50px ,calc(0.3*50vw*0.7));
 }
 
-h1{
+h1, button{
     text-align: center;
+    font-size: max(50px ,calc(0.3*50vw*0.7));
+    padding: 0 1ch;
+    margin: 0;
 }
